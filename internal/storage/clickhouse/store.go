@@ -108,6 +108,7 @@ SELECT
 	event_datetime, registered_at, source, mashine_id, container_id, unit_name, hostname, id, dst_ip, dst_fqdn, src_ip, src_port, dst_port, protocol, service_port, action, extra
 FROM %s
 WHERE registered_at >= ?
+ORDER BY registered_at ASC
 `, s.table)
 
 	rows, err := s.conn.Query(ctx, query, since)

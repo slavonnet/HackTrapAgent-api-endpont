@@ -65,6 +65,10 @@ func (l *Limiter) MaxWindow() time.Duration {
 }
 
 func (l *Limiter) Allow(values map[string]string, now time.Time) bool {
+	if len(l.rules) == 0 {
+		return true
+	}
+
 	l.mu.Lock()
 	defer l.mu.Unlock()
 
@@ -84,6 +88,10 @@ func (l *Limiter) Allow(values map[string]string, now time.Time) bool {
 }
 
 func (l *Limiter) Seed(values map[string]string, eventTime, now time.Time) {
+	if len(l.rules) == 0 {
+		return
+	}
+
 	l.mu.Lock()
 	defer l.mu.Unlock()
 
@@ -114,11 +122,18 @@ func pruneOld(input []time.Time, cutoff time.Time) []time.Time {
 		return input
 	}
 
-	out := input[:0]
-	for _, ts := range input {
-		if !ts.Before(cutoff) {
-			out = append(out, ts)
-		}
+	// timestamps are stored in ascending order, so we can prune via binary search
+	// and avoid scanning the entire slice on each request.
+	firstInWindow := sort.Search(len(input), func(i int) bool {
+		return !input[i].Before(cutoff)
+	})
+	if firstInWindow == 0 {
+		return input
 	}
-	return out
+	if firstInWindow >= len(input) {
+		return input[:0]
+	}
+
+	copy(input, input[firstInWindow:])
+	return input[:len(input)-firstInWindow]
 }
