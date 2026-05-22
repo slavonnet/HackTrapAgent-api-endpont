@@ -111,11 +111,17 @@ HTTP API для регистрации событий из access-логов (sy
 
 Сборка:
 
-`docker build -t hacktrapagent-api-endpoint:latest .`
+`docker build -t ghcr.io/slavonnet/hacktrapagent-api-endpont:latest .`
 
 Запуск:
 
-`docker run --rm -p 8080:8080 -e CLICKHOUSE_ADDRS=clickhouse:9000 -e CLICKHOUSE_DATABASE=default -e CLICKHOUSE_USERNAME=default -e CLICKHOUSE_PASSWORD=secret -e CLICKHOUSE_TABLE=access_events hacktrapagent-api-endpoint:latest`
+`docker run --rm -p 8080:8080 -e CLICKHOUSE_ADDRS=clickhouse:9000 -e CLICKHOUSE_DATABASE=default -e CLICKHOUSE_USERNAME=default -e CLICKHOUSE_PASSWORD=secret -e CLICKHOUSE_TABLE=access_events ghcr.io/slavonnet/hacktrapagent-api-endpont:latest`
+
+Публикация после релиза:
+
+- при `GitHub Release` workflow публикует образ в GHCR:
+  - `ghcr.io/slavonnet/hacktrapagent-api-endpont:<tag>`
+  - `ghcr.io/slavonnet/hacktrapagent-api-endpont:latest`
 
 Особенности Dockerfile:
 
