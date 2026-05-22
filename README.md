@@ -122,6 +122,19 @@ HTTP API для регистрации событий из access-логов (sy
 - при `GitHub Release` workflow публикует образ в GHCR:
   - `ghcr.io/slavonnet/hacktrapagent-api-endpont:<tag>`
   - `ghcr.io/slavonnet/hacktrapagent-api-endpont:latest`
+- а также прикладывает архив образа в assets релиза:
+  - `hacktrapagent-api-endpont-<tag>-linux-amd64.tar.gz`
+
+Ссылки:
+
+- GHCR package: `https://github.com/slavonnet/HackTrapAgent-api-endpont/pkgs/container/hacktrapagent-api-endpont`
+- Release assets: `https://github.com/slavonnet/HackTrapAgent-api-endpont/releases`
+
+Загрузка из release-архива (например для Proxmox CT):
+
+`wget https://github.com/slavonnet/HackTrapAgent-api-endpont/releases/download/<tag>/hacktrapagent-api-endpont-<tag>-linux-amd64.tar.gz`
+
+`gunzip hacktrapagent-api-endpont-<tag>-linux-amd64.tar.gz && docker load -i hacktrapagent-api-endpont-<tag>-linux-amd64.tar`
 
 Особенности Dockerfile:
 
